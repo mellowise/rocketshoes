@@ -50,6 +50,7 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     try {
       const updateCart = [...cart];
       const productExists = updateCart.find(product => product.id === productId);
+
       const stock = await api.get(`/stock/${productId}`);
 
       const stockAmount = stock.data.amount;
@@ -68,13 +69,12 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
         const newProduct = {
           ...product.data,
           amount: 1
-        }
-
+        };
         updateCart.push(newProduct);
-        setCart(updateCart);
-        localStorage.setItem('@RocketShoes:cart', JSON.stringify(updateCart));
       }
 
+      setCart(updateCart);
+      localStorage.setItem('@RocketShoes:cart', JSON.stringify(updateCart));
     } catch {
       toast.error('Erro na adição do produto');
     }
